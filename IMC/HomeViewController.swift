@@ -13,7 +13,6 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         configureUI()
     }
     
@@ -22,8 +21,17 @@ class HomeViewController: UIViewController {
     func configureUI() {
         self.home = Home()
         self.view = home
+        home?.delegate = self
         view.backgroundColor = .white
     }
-   
+}
 
+extension HomeViewController: HomeDelegate {
+    
+    
+    func calculate() {
+        print("Foi do protocolo =======")
+    }
+    
+    
 }

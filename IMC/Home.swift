@@ -7,8 +7,14 @@
 
 import UIKit
 
-class Home: UIView {
+protocol HomeDelegate: AnyObject {
+    func calculate()
+}
 
+class Home: UIView {
+    
+    var delegate: HomeDelegate?
+    
     //MARK: - Components
     
     private let title: UILabel = {
@@ -106,6 +112,7 @@ class Home: UIView {
         btn.backgroundColor = .systemBlue
         btn.clipsToBounds = true
         btn.layer.cornerRadius = 7.5
+        btn.addTarget(self, action: #selector(actionCalculateButton), for: .touchUpInside)
         
         return btn
     }()
@@ -119,6 +126,11 @@ class Home: UIView {
         return label
     }()
     
+    //MARK: - Methods
+    
+     @objc func actionCalculateButton() {
+         delegate?.calculate()
+     }
     
     //MARK: - LifeCycle
     
@@ -169,8 +181,8 @@ class Home: UIView {
             subTitle.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -18),
             
             fieldsStackView.topAnchor.constraint(equalTo: subTitle.bottomAnchor, constant: 18),
-            fieldsStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 28),
-            fieldsStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -28),
+            fieldsStackView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 28),
+            fieldsStackView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -28),
             fieldsStackView.heightAnchor.constraint(equalToConstant: 70),
             
             weightStackView.widthAnchor.constraint(equalToConstant: 100),
