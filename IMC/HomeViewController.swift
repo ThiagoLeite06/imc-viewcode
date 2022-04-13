@@ -9,7 +9,8 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    var home: Home?
+    private let home = Home()
+    var imc: Double = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,19 +20,32 @@ class HomeViewController: UIViewController {
 
     //MARK: - Helpers
     func configureUI() {
-        self.home = Home()
-        self.view = home
-        home?.delegate = self
+        view = home
+        home.delegate = self
         view.backgroundColor = .white
     }
+    
 }
 
 extension HomeViewController: HomeDelegate {
     
-    
-    func calculate() {
-        print("Foi do protocolo =======")
+    func calculate(weight: Double, height: Double) {
+        self.imc = weight / (height*height)
+        showResult(imcResult: imc)
     }
     
-    
+    func showResult(imcResult: Double) {
+        switch imcResult{
+        case 0..<16:
+            home.responseLabel.text = "Magreza"
+        case 16..<18.5:
+            home.responseLabel.text = "Abaixo do peso"
+        case 18.5..<25:
+            home.responseLabel.text = "Peso Ideal"
+        case 25..<30:
+            home.responseLabel.text = "Sobrepeso"
+        default:
+            home.responseLabel.text = "Obesidade"
+        }
+    }
 }

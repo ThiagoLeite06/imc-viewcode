@@ -8,12 +8,13 @@
 import UIKit
 
 protocol HomeDelegate: AnyObject {
-    func calculate()
+    func calculate(weight: Double, height: Double)
+    
 }
 
 class Home: UIView {
     
-    var delegate: HomeDelegate?
+    weak var delegate: HomeDelegate?
     
     //MARK: - Components
     
@@ -118,10 +119,9 @@ class Home: UIView {
     }()
     
     
-    private let responseLabel: UILabel = {
+    public let responseLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Teste"
         
         return label
     }()
@@ -129,8 +129,17 @@ class Home: UIView {
     //MARK: - Methods
     
      @objc func actionCalculateButton() {
-         delegate?.calculate()
+         // Notify controller
+         if let weight = Double(weightTextField.text!),
+            let height = Double(heightTextField.text!) {
+             delegate?.calculate(weight: weight, height: height)
+         }
+         
+         weightTextField.text = ""
+         heightTextField.text = ""
      }
+    
+   
     
     //MARK: - LifeCycle
     
@@ -161,7 +170,6 @@ class Home: UIView {
         addSubview(calcButton)
         addSubview(responseLabel)
         
-
     }
     
     required init?(coder: NSCoder) {
@@ -195,9 +203,7 @@ class Home: UIView {
             responseLabel.topAnchor.constraint(equalTo: calcButton.bottomAnchor, constant: 100),
             responseLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 28),
             responseLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -28),
-            
-            
-            
+               
         ])
     }
 }
